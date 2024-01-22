@@ -1,0 +1,19 @@
+plugins {
+    id 'java'
+    id "org.springframework.boot.conventions"
+}
+
+description = "Spring Boot Demo"
+
+group 'org.springframework.boot'
+version '2.6.6'
+
+dependencies {
+    implementation(project(":spring-boot-project:spring-boot-starters:spring-boot-starter-web"))
+
+    testImplementation(project(":spring-boot-project:spring-boot-starters:spring-boot-starter-test"))
+}
+
+test {
+    useJUnitPlatform()
+}
