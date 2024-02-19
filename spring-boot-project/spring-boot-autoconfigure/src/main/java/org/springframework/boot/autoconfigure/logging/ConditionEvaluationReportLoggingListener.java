@@ -61,7 +61,7 @@ public class ConditionEvaluationReportLoggingListener
 	private final LogLevel logLevelForReport;
 
 	public ConditionEvaluationReportLoggingListener() {
-		this(LogLevel.DEBUG);
+		this(LogLevel.INFO);
 	}
 
 	public ConditionEvaluationReportLoggingListener(LogLevel logLevelForReport) {
@@ -89,11 +89,13 @@ public class ConditionEvaluationReportLoggingListener
 
 	protected void onApplicationEvent(ApplicationEvent event) {
 		ConfigurableApplicationContext initializerApplicationContext = this.applicationContext;
+		// 容器刷新成功
 		if (event instanceof ContextRefreshedEvent) {
 			if (((ApplicationContextEvent) event).getApplicationContext() == initializerApplicationContext) {
 				logAutoConfigurationReport();
 			}
 		}
+		// 容器刷新失败
 		else if (event instanceof ApplicationFailedEvent
 				&& ((ApplicationFailedEvent) event).getApplicationContext() == initializerApplicationContext) {
 			logAutoConfigurationReport(true);

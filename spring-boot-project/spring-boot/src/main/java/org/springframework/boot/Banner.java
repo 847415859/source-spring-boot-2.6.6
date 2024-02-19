@@ -32,9 +32,9 @@ import org.springframework.core.env.Environment;
 public interface Banner {
 
 	/**
-	 * Print the banner to the specified print stream.
+	 * print the banner to the specified print stream.
 	 * @param environment the spring environment
-	 * @param sourceClass the source class for the application
+	 * @param sourceclass the source class for the application
 	 * @param out the output print stream
 	 */
 	void printBanner(Environment environment, Class<?> sourceClass, PrintStream out);

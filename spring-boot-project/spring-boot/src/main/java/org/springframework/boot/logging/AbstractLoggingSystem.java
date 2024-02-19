@@ -59,7 +59,7 @@ public abstract class AbstractLoggingSystem extends LoggingSystem {
 			initializeWithSpecificConfig(initializationContext, configLocation, logFile);
 			return;
 		}
-		// 默认位置初始化
+		// 默认位置初始化, 则执行initializeWithConventions方法. 两个方法都在loadConfiguration(LoggingInitializationContext,String,LogFile)中汇合
 		initializeWithConventions(initializationContext, logFile);
 	}
 

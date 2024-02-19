@@ -33,6 +33,7 @@ import org.springframework.util.Assert;
 
 /**
  * Allows programmatic configuration of logback which is usually faster than parsing XML.
+ * 允许对logback进行编程配置，这通常比解析XML更快。
  *
  * @author Phillip Webb
  */

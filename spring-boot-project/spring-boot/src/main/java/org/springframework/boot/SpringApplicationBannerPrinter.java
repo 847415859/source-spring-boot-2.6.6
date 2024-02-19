@@ -32,6 +32,7 @@ import org.springframework.util.StringUtils;
 
 /**
  * Class used by {@link SpringApplication} to print the application banner.
+ * 由SpringApplication用于打印应用程序横幅的类
  *
  * @author Phillip Webb
  */
@@ -56,6 +57,10 @@ class SpringApplicationBannerPrinter {
 		this.fallbackBanner = fallbackBanner;
 	}
 
+	/**
+	 * 日志文件输出
+	 * @return
+	 */
 	Banner print(Environment environment, Class<?> sourceClass, Log logger) {
 		Banner banner = getBanner(environment);
 		try {
@@ -67,12 +72,20 @@ class SpringApplicationBannerPrinter {
 		return new PrintedBanner(banner, sourceClass);
 	}
 
+	/**
+	 * 控制台 Console 输出
+	 */
 	Banner print(Environment environment, Class<?> sourceClass, PrintStream out) {
 		Banner banner = getBanner(environment);
 		banner.printBanner(environment, sourceClass, out);
 		return new PrintedBanner(banner, sourceClass);
 	}
 
+	/**
+	 * 获取Bannner实现对象
+	 * @param environment
+	 * @return
+	 */
 	private Banner getBanner(Environment environment) {
 		Banners banners = new Banners();
 		banners.addIfNotNull(getImageBanner(environment));
@@ -83,9 +96,15 @@ class SpringApplicationBannerPrinter {
 		if (this.fallbackBanner != null) {
 			return this.fallbackBanner;
 		}
+		// 默认 SpringBootBanner
 		return DEFAULT_BANNER;
 	}
 
+	/**
+	 * 获取文本banner
+	 * @param environment
+	 * @return
+	 */
 	private Banner getTextBanner(Environment environment) {
 		String location = environment.getProperty(BANNER_LOCATION_PROPERTY, DEFAULT_BANNER_LOCATION);
 		Resource resource = this.resourceLoader.getResource(location);
@@ -100,12 +119,19 @@ class SpringApplicationBannerPrinter {
 		return null;
 	}
 
+	/**
+	 * 获取图片 banner
+	 * @param environment
+	 * @return
+	 */
 	private Banner getImageBanner(Environment environment) {
+		// 获取banner图片地址
 		String location = environment.getProperty(BANNER_IMAGE_LOCATION_PROPERTY);
 		if (StringUtils.hasLength(location)) {
 			Resource resource = this.resourceLoader.getResource(location);
 			return resource.exists() ? new ImageBanner(resource) : null;
 		}
+		// 如果没有指定，则会遍历  "gif", "jpg", "png" 为后缀的扩展名的文件
 		for (String ext : IMAGE_EXTENSION) {
 			Resource resource = this.resourceLoader.getResource("banner." + ext);
 			if (resource.exists()) {
@@ -115,6 +141,9 @@ class SpringApplicationBannerPrinter {
 		return null;
 	}
 
+	/**
+	 * 将文件转化为字符串
+	 */
 	private String createStringFromBanner(Banner banner, Environment environment, Class<?> mainApplicationClass)
 			throws UnsupportedEncodingException {
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();

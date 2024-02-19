@@ -34,7 +34,8 @@ import org.springframework.boot.ansi.AnsiStyle;
  * single 'color' option can be provided to the converter, or if not specified color will
  * be picked based on the logging level.
  *
- * Logback CompositeConverter使用AnsiOutput类输出颜色。可以向转换器提供单个“颜色”选项，或者如果未指定颜色，则将根据日志记录级别选择颜色
+ * Logback CompositeConverter使用AnsiOutput类输出颜色。可以向转换器提供单个“颜色”选项，
+ * 或者如果未指定颜色，则将根据日志记录级别选择颜色
  *
  * @author Phillip Webb
  * @since 1.0.0
@@ -55,6 +56,9 @@ public class ColorConverter extends CompositeConverter<ILoggingEvent> {
 		ELEMENTS = Collections.unmodifiableMap(ansiElements);
 	}
 
+	/**
+	 * 日志级别对应的颜色
+	 */
 	private static final Map<Integer, AnsiElement> LEVELS;
 
 	static {

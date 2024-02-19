@@ -55,14 +55,23 @@ class SpringApplicationShutdownHook implements Runnable {
 
 	private final Handlers handlers = new Handlers();
 
+	/**
+	 * 正在运行 Spring 容器集合
+	 */
 	private final Set<ConfigurableApplicationContext> contexts = new LinkedHashSet<>();
 
+	/**
+	 * 已经被关闭 Spring 容器
+	 */
 	private final Set<ConfigurableApplicationContext> closedContexts = Collections.newSetFromMap(new WeakHashMap<>());
 
 	private final ApplicationContextClosedListener contextCloseListener = new ApplicationContextClosedListener();
 
 	private final AtomicBoolean shutdownHookAdded = new AtomicBoolean();
 
+	/**
+	 * 判断线程
+	 */
 	private boolean inProgress;
 
 	SpringApplicationShutdownHandlers getHandlers() {
@@ -70,9 +79,12 @@ class SpringApplicationShutdownHook implements Runnable {
 	}
 
 	void registerApplicationContext(ConfigurableApplicationContext context) {
+		// 添加唯一的一个关闭钩子函数  SpringApplicationShutdownHook
 		addRuntimeShutdownHookIfNecessary();
 		synchronized (SpringApplicationShutdownHook.class) {
+			// 校验线程是否已经开启
 			assertNotInProgress();
+			// 添加一个容器关闭监听器（如果容器关闭介绍容器关闭事件维护到 contextCloseListener 中）
 			context.addApplicationListener(this.contextCloseListener);
 			this.contexts.add(context);
 		}
@@ -113,6 +125,7 @@ class SpringApplicationShutdownHook implements Runnable {
 		}
 		contexts.forEach(this::closeAndWait);
 		closedContexts.forEach(this::closeAndWait);
+		// 执行通过 Spring 注册的工资函数
 		actions.forEach(Runnable::run);
 	}
 

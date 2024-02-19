@@ -24,6 +24,8 @@ import ch.qos.logback.core.CoreConstants;
  * {@link ThrowableProxyConverter} that adds some additional whitespace around the stack
  * trace.
  *
+ * ThrowableProxyConverter，在堆栈跟踪周围添加一些额外的空白。
+ *
  * @author Phillip Webb
  * @since 1.0.0
  */

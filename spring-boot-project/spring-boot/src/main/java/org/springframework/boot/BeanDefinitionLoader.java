@@ -162,11 +162,13 @@ class BeanDefinitionLoader {
 	}
 
 	private void load(Class<?> source) {
+		// groovy 不关注
 		if (isGroovyPresent() && GroovyBeanDefinitionSource.class.isAssignableFrom(source)) {
 			// Any GroovyLoaders added in beans{} DSL can contribute beans here
 			GroovyBeanDefinitionSource loader = BeanUtils.instantiateClass(source, GroovyBeanDefinitionSource.class);
 			((GroovyBeanDefinitionReader) this.groovyReader).beans(loader.getBeans());
 		}
+		// 检查bean是否符合注册条件
 		if (isEligible(source)) {
 			this.annotatedReader.register(source);
 		}
@@ -290,6 +292,10 @@ class BeanDefinitionLoader {
 
 	/**
 	 * Check whether the bean is eligible for registration.
+	 * 检查bean是否符合注册条件
+	 * 	1.不是匿名类
+	 * 	2.不是 Groovy闭包
+	 * 	3.没有构造函数
 	 * @param type candidate bean type
 	 * @return true if the given bean type is eligible for registration, i.e. not a groovy
 	 * closure nor an anonymous class

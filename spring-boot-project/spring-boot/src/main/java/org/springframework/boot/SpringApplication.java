@@ -326,7 +326,7 @@ public class SpringApplication {
 
 			// 默认spring.beaninfo.ignore=true，表示不需要jdk缓存beanInfo信息，Spring自己会缓存
 			configureIgnoreBeanInfo(environment);
-
+			// 打印 Banner图
 			Banner printedBanner = printBanner(environment);
 
 			// 6、根据应用类型创建Spring容器
@@ -463,6 +463,7 @@ public class SpringApplication {
 
 		if (this.logStartupInfo) {
 			logStartupInfo(context.getParent() == null);
+			// 打印 profile
 			logStartupProfileInfo(context);
 		}
 
@@ -488,6 +489,7 @@ public class SpringApplication {
 		}
 
 		// Load the sources
+		Set<Object> sources = getAllSources();
 		// 拿到启动配置类（run方法传进来的类）
 		Assert.notEmpty(sources, "Sources must not\t\tSet<Object> sources = getAllSources();\n be empty");
 
@@ -657,11 +659,13 @@ public class SpringApplication {
 	}
 
 	private Banner printBanner(ConfigurableEnvironment environment) {
+		// 如果不需要打印则不输出
 		if (this.bannerMode == Banner.Mode.OFF) {
 			return null;
 		}
-		ResourceLoader resourceLoader = (this.resourceLoader != null) ? this.resourceLoader
-				: new DefaultResourceLoader(null);
+		// 获取资源加载器
+		ResourceLoader resourceLoader = (this.resourceLoader != null) ? this.resourceLoader : new DefaultResourceLoader(null);
+		// 默认 banner 为 null
 		SpringApplicationBannerPrinter bannerPrinter = new SpringApplicationBannerPrinter(resourceLoader, this.banner);
 		if (this.bannerMode == Mode.LOG) {
 			return bannerPrinter.print(environment, this.mainApplicationClass, logger);
@@ -673,6 +677,8 @@ public class SpringApplication {
 	 * Strategy method used to create the {@link ApplicationContext}. By default this
 	 * method will respect any explicitly set application context class or factory before
 	 * falling back to a suitable default.
+	 * 用于创建ApplicationContext的策略方法。默认情况下，在返回到合适的默认值之前，此方法将尊重任何显式设置的应用程序上下文类或工厂
+	 *
 	 * @return the application context (not yet refreshed)
 	 * @see #setApplicationContextFactory(ApplicationContextFactory)
 	 */
@@ -855,7 +861,9 @@ public class SpringApplication {
 
 	private void callRunners(ApplicationContext context, ApplicationArguments args) {
 		List<Object> runners = new ArrayList<>();
+		// 获取 ApplicationRunner
 		runners.addAll(context.getBeansOfType(ApplicationRunner.class).values());
+		// 获取 CommandLineRunner
 		runners.addAll(context.getBeansOfType(CommandLineRunner.class).values());
 		AnnotationAwareOrderComparator.sort(runners);
 

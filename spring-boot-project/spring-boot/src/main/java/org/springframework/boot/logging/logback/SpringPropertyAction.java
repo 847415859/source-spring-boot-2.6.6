@@ -30,6 +30,8 @@ import org.springframework.core.env.Environment;
  * Logback {@link Action} to support {@code <springProperty>} tags. Allows logback
  * properties to be sourced from the Spring environment.
  *
+ * Logback操作以支持标记。允许从Spring环境中获取logback属性。
+ *
  * @author Phillip Webb
  * @author Eddú Meléndez
  * @author Madhura Bhave
@@ -55,6 +57,7 @@ class SpringPropertyAction extends Action {
 		if (OptionHelper.isEmpty(name) || OptionHelper.isEmpty(source)) {
 			addError("The \"name\" and \"source\" attributes of <springProperty> must be set");
 		}
+		// 从Spring环境中获取变量
 		ActionUtil.setProperty(context, name, getValue(source, defaultValue), scope);
 	}
 

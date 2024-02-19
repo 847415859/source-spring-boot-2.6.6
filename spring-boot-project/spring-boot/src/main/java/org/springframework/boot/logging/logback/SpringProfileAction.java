@@ -37,6 +37,8 @@ import org.springframework.util.StringUtils;
  * Logback {@link Action} to support {@code <springProfile>} tags. Allows section of a
  * logback configuration to only be enabled when a specific profile is active.
  *
+ * Logback操作以支持标记。只允许在特定配置文件处于活动状态时启用logback配置的部分。
+ *
  * @author Phillip Webb
  * @author Eddú Meléndez
  */

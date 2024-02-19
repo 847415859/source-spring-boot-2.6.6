@@ -44,13 +44,14 @@ class SpringBootBanner implements Banner {
 		for (String line : BANNER) {
 			printStream.println(line);
 		}
+		// 获取到Springboot版本
 		String version = SpringBootVersion.getVersion();
 		version = (version != null) ? " (v" + version + ")" : "";
 		StringBuilder padding = new StringBuilder();
 		while (padding.length() < STRAP_LINE_SIZE - (version.length() + SPRING_BOOT.length())) {
 			padding.append(" ");
 		}
-
+		// 输出颜色
 		printStream.println(AnsiOutput.toString(AnsiColor.GREEN, SPRING_BOOT, AnsiColor.DEFAULT, padding.toString(),
 				AnsiStyle.FAINT, version));
 		printStream.println();

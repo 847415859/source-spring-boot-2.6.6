@@ -74,8 +74,14 @@ public class LogbackLoggingSystem extends Slf4JLoggingSystem {
 	// Static final field to facilitate code removal by Graal
 	private static final boolean XML_ENABLED = !SpringProperties.getFlag("spring.xml.ignore");
 
+	/**
+	 * logback 文件路径
+	 */
 	private static final String CONFIGURATION_FILE_PROPERTY = "logback.configurationFile";
 
+	/**
+	 * 日志隔离级别
+	 */
 	private static final LogLevels<Level> LEVELS = new LogLevels<>();
 
 	static {
@@ -108,6 +114,10 @@ public class LogbackLoggingSystem extends Slf4JLoggingSystem {
 		return new LogbackLoggingSystemProperties(environment);
 	}
 
+	/**
+	 * 获取标准日志文件的名称
+	 * @return
+	 */
 	@Override
 	protected String[] getStandardConfigLocations() {
 		return new String[] { "logback-test.groovy", "logback-test.xml", "logback.groovy", "logback.xml" };
@@ -126,11 +136,14 @@ public class LogbackLoggingSystem extends Slf4JLoggingSystem {
 	@Override
 	public void initialize(LoggingInitializationContext initializationContext, String configLocation, LogFile logFile) {
 		LoggerContext loggerContext = getLoggerContext();
+		// 判断logger上下文中, 是否已经执行了springboot下的logback初始化. 这里是使用LoggingSystem的全限定类名占位标志的
 		if (isAlreadyInitialized(loggerContext)) {
 			return;
 		}
+		// 核心代码: 初始化日志系统
 		super.initialize(initializationContext, configLocation, logFile);
 		loggerContext.getTurboFilterList().remove(FILTER);
+		// 标记已经进行初始化了
 		markAsInitialized(loggerContext);
 		if (StringUtils.hasText(System.getProperty(CONFIGURATION_FILE_PROPERTY))) {
 			getLogger(LogbackLoggingSystem.class.getName()).warn("Ignoring '" + CONFIGURATION_FILE_PROPERTY
@@ -219,9 +232,12 @@ public class LogbackLoggingSystem extends Slf4JLoggingSystem {
 	@Override
 	public void cleanUp() {
 		LoggerContext context = getLoggerContext();
+		// 标记为未初始化
 		markAsUninitialized(context);
 		super.cleanUp();
+		// 清除状态消息列表
 		context.getStatusManager().clear();
+		// 移除过滤器
 		context.getTurboFilterList().remove(FILTER);
 	}
 
@@ -316,14 +332,27 @@ public class LogbackLoggingSystem extends Slf4JLoggingSystem {
 		return "unknown location";
 	}
 
+	/**
+	 * 是否已经初始化了
+	 * @param loggerContext
+	 * @return
+	 */
 	private boolean isAlreadyInitialized(LoggerContext loggerContext) {
 		return loggerContext.getObject(LoggingSystem.class.getName()) != null;
 	}
 
+	/**
+	 * 标记已经初始化了
+	 * @param loggerContext
+	 */
 	private void markAsInitialized(LoggerContext loggerContext) {
 		loggerContext.putObject(LoggingSystem.class.getName(), new Object());
 	}
 
+	/**
+	 * 标记没有初始化
+	 * @param loggerContext
+	 */
 	private void markAsUninitialized(LoggerContext loggerContext) {
 		loggerContext.removeObject(LoggingSystem.class.getName());
 	}

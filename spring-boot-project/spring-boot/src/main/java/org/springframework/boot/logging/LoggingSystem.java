@@ -41,6 +41,7 @@ public abstract class LoggingSystem {
 
 	/**
 	 * A System property that can be used to indicate the {@link LoggingSystem} to use.
+	 * 一个System属性，可用于指示要使用的LoggingSystem。
 	 */
 	public static final String SYSTEM_PROPERTY = LoggingSystem.class.getName();
 

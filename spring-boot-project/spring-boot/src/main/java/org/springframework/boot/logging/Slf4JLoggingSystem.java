@@ -95,6 +95,7 @@ public abstract class Slf4JLoggingSystem extends AbstractLoggingSystem {
 
 	private void removeJdkLoggingBridgeHandler() {
 		try {
+			// 移除默认的 Root 处理器
 			removeDefaultRootHandler();
 			SLF4JBridgeHandler.uninstall();
 		}

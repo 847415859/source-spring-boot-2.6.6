@@ -28,6 +28,8 @@ import org.springframework.core.env.Environment;
  * Extended version of the Logback {@link JoranConfigurator} that adds additional Spring
  * Boot rules.
  *
+ * Logback｛@link JoranConfigurator｝的扩展版本，添加了额外的Spring Boot规则。
+ *
  * @author Phillip Webb
  */
 class SpringBootJoranConfigurator extends JoranConfigurator {
